@@ -6,6 +6,7 @@
   "dependencies": {
     "antd": "^3.0.0",
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "copy-webpack-plugin": "^4.5.2",
     "moment": "^2.19.3",
     "preference": "^1.1.0",

@@ -15,8 +15,8 @@ def print_version(flag):
         sys.exit(0)
 
 
-define('address', default='127.0.0.1', help='Listen address')
-define('port', type=int, default=8888,  help='Listen port')
+define('address', default='0.0.0.0', help='Listen address')
+define('port', type=int, default=23333,  help='Listen port')
 define('debug', type=bool, default=False, help='Debug mode')
 define('policy', default='warning',
        help='Missing host key policy, reject|autoadd|warning')

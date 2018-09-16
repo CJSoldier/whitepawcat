@@ -1,5 +1,6 @@
 ## Introduction
-A small tool based on webview and webssh supporting multi platform for efficient big data development.
+A small tool based on [zserge/webview](https://github.com/zserge/webview) and [huashengdun/webssh](https://github.com/huashengdun/webssh) supporting multi platform for efficient big data development.
+I copy complete webssh code here just for convenience.
 ## Features
 - fast startup
 - cross platform
@@ -9,7 +10,7 @@ A small tool based on webview and webssh supporting multi platform for efficient
 ![demo](https://github.com/CJSoldier/whitepawcat/raw/master/preview/demo.gif)
 ### Runtime requirements
 - jdk1.8 installed(**important**)
-- JAVA_HOME, LD_LIBRARY_PATH environment being set(**important**)
+- JAVA_HOME, LD_LIBRARY_PATH environment being set(**important**)
 
 macos set LD_LIBRARY_PATH:
 
@@ -61,7 +62,7 @@ cd whitepawcat/gui/whitepawcat
 cnpm install 
 cnpm run build
 copy index.html and dist folder to whitepawcat/gui folder
-modify index.html(xxx.js,xxx.css  ->  dist/xxx.js,dist/xxx.css)
+modify index.html(xxx.js,xxx.css  ->  dist/xxx.js,dist/xxx.css) (important)
 ```
 
 3.build Java Code
@@ -81,26 +82,28 @@ If you don't want to use webssh, you needn't do that.
 ```
 sudo pip install tornado --ignore-installed -i https://pypi.douban.com/simple
 sudo pip install paramiko --ignore-installed -i https://pypi.douban.com/simple
-sudo pip install modulegraph
+
 
 // you may use other tools.I don't expect users have already installed python.
-sudo pip install pyinstaller
+sudo pip install pyinstaller --ignore-installed -i https://pypi.douban.com/simple
 cd whitepawcat/webssh/webssh
 pyinstaller -p . --add-data 'static/:webssh/static' --add-data 'templates/:webssh/templates' main.py
-
+// windows
+pyinstaller -p . --add-data 'static/;webssh/static' --add-data 'templates/;webssh/templates' main.py
 cd whitepawcat/webssh/webssh/dist/main
-# if you don't wanna use webssh,you needn't start it. Once start, the port must be 23333.Why this port?You know it.
-./main --address='0.0.0.0' --port=23333
+# if you don't wanna use webssh,you needn't start it. Once start, the port must be 23333.Why this port?Just for fun.
+./main
+// windows
+main.exe
 ```
 
 ## How it Works
-
-Webview launches system-provided browser for us, it's similar to electron but more lightweight.
-Webview also registers a callback function(router) for js,after then js can call C.
-C callback function will launch a jvm when js call it for the first time.
-Java method will load jar files using parent last classloader when C call it for the first time
-Java method returns results("window.res='result string'"), C assigns the results to js global variable(window.res).
-js renders the page.
+- Webview launches system-provided browser for us, it's similar to electron but more lightweight.
+- Webview also registers a callback function(router) for js,after then js can call C.
+- C callback function will launch a jvm when js call it for the first time.
+- Java method will load jar files using parent last classloader when C call it for the first time
+- Java method returns results("window.res='result string'"), C assigns the results to js global variable(window.res).
+- js renders the page.
 
 If server support REST api such as ElasticSearch, you can also request server directly via axios fetch.
 
@@ -110,6 +113,19 @@ If server support REST api such as ElasticSearch, you can also request server di
 - cannot print string contains non-ascii characters using webview_debug,print it in Java or in js.
 - just pass the value GetStringUTFChars function returned to js, it won't be gibberish(long story)
 - be careful of strings that contain backslash(long story)
-- cannot use `window.open` to open new windows/tabs in webview
-- cannot use Ctrl+C/S/V in webview
+- cannot use `window.open` to open new windows/tabs in webview(macos)
+- cannot use Ctrl+C/S/V in webview(macos)
+- cannot use `<input type="file"/>` in webview(macos)
 
+## Imperfections(help me pls)
+- code is simple stupid
+- cannot build automatically
+- every Java method called from C must return String value wrapped by `windows.res=''`
+- page layout is simple stupid
+- have to start webssh manually
+- have to set LD_LIBRARY_PATH manually
+
+## Why call it whitepawcat
+I was doing my homework, "White paw cat.",Mom said.A cat walked past me,
+"Mom, the cat's claws ARE white".She laughed.Many years later,she told me that she meant I'm absent-minded.
+Don't be white paw cat:).

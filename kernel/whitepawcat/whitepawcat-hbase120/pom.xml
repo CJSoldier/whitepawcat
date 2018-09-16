@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>whitepawcat-hbase120</artifactId>
+	<repositories>
+    <repository>
+      <id>cloudera</id>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+    </repository>
+  </repositories>
     <dependencies>
         <dependency>
             <groupId>org.apache.hbase</groupId>

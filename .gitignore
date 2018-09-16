@@ -1,0 +1,13 @@
+*.iml
+*.idea
+*/out/
+/target
+*/target/
+*/tmp/
+derby.log
+/metastore_db/
+.DS_Store
+*/.DS_Store
+*/.classpath
+*/.project
+*/.eml

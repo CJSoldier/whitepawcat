@@ -99,7 +99,7 @@ main.exe
 
 ## How it Works
 - Webview launches system-provided browser for us, it's similar to electron but more lightweight.
-- Webview also registers a callback function(router) for js,after then js can call C.
+- Webview also registers a callback function(router) for js,after then js and C can call each other.
 - C callback function will launch a jvm when js call it for the first time.
 - Java method will load jar files using parent last classloader when C call it for the first time
 - Java method returns results("window.res='result string'"), C assigns the results to js global variable(window.res).
@@ -113,7 +113,7 @@ If server support REST api such as ElasticSearch, you can also request server di
 - cannot print string contains non-ascii characters using webview_debug,print it in Java or in js.
 - just pass the value GetStringUTFChars function returned to js, it won't be gibberish(long story)
 - be careful of strings that contain backslash(long story)
-- cannot use `window.open` to open new windows/tabs in webview(macos)
+- cannot use `window.open` to open new windows/tabs in webview
 - cannot use Ctrl+C/S/V in webview(macos)
 - cannot use `<input type="file"/>` in webview(macos)
 
@@ -129,3 +129,41 @@ If server support REST api such as ElasticSearch, you can also request server di
 I was doing my homework, "White paw cat.",Mom said.A cat walked past me,
 "Mom, the cat's claws ARE white".She laughed.Many years later,she told me that she meant I'm absent-minded.
 Don't be white paw cat:).
+
+## How to contribute
+
+You can treat executable file whitepawcat as a browser.That is to say, if you don't modify
+C Code, you needn't compile an executable whitepawcat yourself, leaving you to concentrate on 
+developing web apps.
+
+Here's an example.I want to add a hbase client, hbase server version is hbase-cdh-1.2.0.
+
+1. add a tab named hbase in index.js
+2. request data(two ways)
+
+   2.1. send http request via axios(if server has REST api).But it may have some limitations.
+
+   2.2. call Java method,like this:
+
+```
+// pass 4 args. Note .jar files must be under whitepawcat/kernel
+// I didn't pass version, because jar file name contains version info.
+param.jarName="whitepawcat-hbase120.jar";
+param.classFullName="controller.MainController";
+param.staticMethodName="upsertRecord";
+param.args=JSON.stringify({url:hUrl, port:hPort, namespaceTable:nsTable, rowkey:rkey, kvs:pdata});
+
+// call C method, main.c will launch a jvm and call whitepawcat-core.jar automatically
+// whitepawcat-core.jar will load whitepawcat-hbase120.jar with a custom parent last classloader and then call java method upsertRecord
+// external.invoke can only be called in webview. In real browser, you should use fake data.
+external.invoke(JSON.stringify(param));
+// main.c will assign results to js global variable automatically. 
+// render the page
+this.setState({resData:window.res});
+```
+
+3. add a maven module named whitepawcat-hbase120
+4. configure your preference in gui/whitepawcat/preference.js.
+5. done
+
+

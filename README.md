@@ -4,9 +4,9 @@ I copy complete webssh code here just for convenience.
 ## Features
 - fast startup
 - cross-platform
-- hbase gui client
-- ES gui client
-- ssh
+- Hbase gui client
+- ElasticSearch gui client
+- ssh client
 - easy to extend(add any feature you want)
 
 ## Preview

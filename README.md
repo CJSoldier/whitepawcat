@@ -3,8 +3,11 @@ A small tool based on [zserge/webview](https://github.com/zserge/webview) and [h
 I copy complete webssh code here just for convenience.
 ## Features
 - fast startup
-- cross platform
-- MAYBE easy to customize(plugable)
+- cross-platform
+- hbase gui client
+- ES gui client
+- ssh
+- easy to extend(add any feature you want)
 
 ## Preview
 ![demo](https://github.com/CJSoldier/whitepawcat/raw/master/preview/demo.gif)
